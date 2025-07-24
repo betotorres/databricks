@@ -1,0 +1,24 @@
+CREATE OR REPLACE VIEW desenvolvimento.gold.vw_tracks_artists_decada_agg AS
+SELECT
+  (FLOOR(CAST(SUBSTRING(release_date, 1, 4) AS INT) / 10) * 10) AS decada,
+  COUNT(*) AS total_tracks,
+  AVG(popularity) AS avg_popularity,
+  AVG(duration_ms) AS avg_duration_ms,
+  AVG(danceability) AS avg_danceability,
+  AVG(energy) AS avg_energy,
+  AVG(key) AS avg_key,
+  AVG(loudness) AS avg_loudness,
+  AVG(mode) AS avg_mode,
+  AVG(speechiness) AS avg_speechiness,
+  AVG(acousticness) AS avg_acousticness,
+  AVG(instrumentalness) AS avg_instrumentalness,
+  AVG(liveness) AS avg_liveness,
+  AVG(valence) AS avg_valence,
+  AVG(tempo) AS avg_tempo,
+  AVG(time_signature) AS avg_time_signature,
+  AVG(artist_popularity) AS avg_artist_popularity,
+  AVG(followers) AS avg_followers
+FROM desenvolvimento.gold.tracks_artists
+WHERE release_date IS NOT NULL AND LENGTH(release_date) >= 4
+GROUP BY (FLOOR(CAST(SUBSTRING(release_date, 1, 4) AS INT) / 10) * 10)
+ORDER BY decada;
